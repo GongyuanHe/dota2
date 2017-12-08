@@ -243,7 +243,7 @@ const styles= ({
       height: '500px',
       borderStyle: 'solid',
       borderWidth: '5px',
-      alignContent: 'flex-start'
+      alignContent: 'flex-start',
   },
   hover: {
       position: 'absolute',
