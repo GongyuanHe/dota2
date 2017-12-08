@@ -1,11 +1,54 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import { connect } from 'react-redux';
 
-import logo from './logo.png'
+import logo from './logo.png';
+import { login, logout } from '../Actions.js';
+import firebase from '../Firebase.js';
 
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.isLoggedIn,
+    }
+}
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        login: () => dispatch(login()),
+        logout: () => dispatch(logout())
+    }
+}
 
-class Header extends Component {
+class HeaderComponent extends Component {
+  constructor(props) {
+     super(props);
+     this.state = {
+        loginText: "Log In",
+        photoURL: "",
+     }
+  }
+
+  handleLogin = () => {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      if (this.props.isLoggedIn) {
+          firebase.auth().signOut().then(() => {
+             this.props.logout();
+             this.setState({
+                loginText: "Log In",
+                photoURL: "",
+             });
+          });
+      }else{
+          firebase.auth().signInWithPopup(provider).then((result)=>{
+              this.props.login();
+              this.setState({
+                 loginText: "Log Out",
+                 photoURL: result.user.photoURL,
+              });
+          });
+      }
+  }
+
   render() {
     return (
       <div className="Header" style={styles.container}>
@@ -19,7 +62,16 @@ class Header extends Component {
               </div>
           </div>
           <div className="Lcontainer" style={styles.Rcontainer}>
-              <a id = "login" style={styles.login}>Log In / Sign Up</a>
+              <a id = "login" style={styles.login} onClick={this.handleLogin}>{this.state.loginText}</a>
+              <div>
+                  {
+                      this.state.photoURL ? (
+                          <img src={this.state.photoURL} style={{width: '30px', height: '30px'}} alt = 'selfi'></img>
+                      ) : (
+                          <div></div>
+                      )
+                  }
+              </div>
               <FlatButton label="About" />
               <FlatButton label="Contact Us" />
               <FlatButton label="Location" />
@@ -54,6 +106,7 @@ const styles = ({
     },
     login: {
         color: '#1e3651',
+        width: '120px',
         display: 'flex',
         fontSize: '1.5em',
         height: '40px',
@@ -68,4 +121,6 @@ const styles = ({
         margin: '10px'
     },
 });
+
+const Header = connect(mapStateToProps, mapDispatchToProps)(HeaderComponent);
 export default Header;
