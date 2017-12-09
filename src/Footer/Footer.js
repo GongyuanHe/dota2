@@ -8,14 +8,13 @@ class Footer extends Component {
             <div style={styles.container}>
                 <div style={styles.Lcontainer}>
                     <FlatButton labelStyle={styles.copy} label="Home" />
-                    <FlatButton labelStyle={styles.copy} label="Location" />
-                    <FlatButton labelStyle={styles.copy} label="Privacy" />
-                    <FlatButton labelStyle={styles.copy} label="Contact Us" />
-                    <FlatButton labelStyle={styles.copy} label="About" />
+                    <FlatButton labelStyle={styles.copy} label="Heroes" />
+                    <FlatButton labelStyle={styles.copy} label="Store" />
+                    <FlatButton labelStyle={styles.copy} label="Around" />
                 </div>
                 <div style={styles.Rcontainer}>
                     <div style={styles.copy}>
-                        Made by XXXXXXX <i className="fa fa-copyright" aria-hidden="true"></i> 2017
+                        Made by Park <i className="fa fa-copyright" aria-hidden="true"></i> 2017
                     </div>
                 </div>
             </div>

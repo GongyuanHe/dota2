@@ -28,6 +28,25 @@ class HeaderComponent extends Component {
      }
   }
 
+  componentWillMount() {
+      firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+              this.props.login();
+              this.setState({
+                 loginText: "Log Out",
+                 photoURL: user.photoURL,
+              });
+          } else {
+              // No user is signed in.
+              this.props.logout();
+              this.setState({
+                 loginText: "Log In",
+                 photoURL: "",
+              });
+          }
+      });
+  }
+
   handleLogin = () => {
       var provider = new firebase.auth.GoogleAuthProvider();
       if (this.props.isLoggedIn) {
@@ -37,7 +56,7 @@ class HeaderComponent extends Component {
                 loginText: "Log In",
                 photoURL: "",
              });
-          });
+           });
       }else{
           firebase.auth().signInWithPopup(provider).then((result)=>{
               this.props.login();
@@ -72,9 +91,9 @@ class HeaderComponent extends Component {
                       )
                   }
               </div>
-              <FlatButton label="About" />
-              <FlatButton label="Contact Us" />
-              <FlatButton label="Location" />
+              <FlatButton label="Around" />
+              <FlatButton label="Store" />
+              <FlatButton label="Heroes" />
               <FlatButton label="Home" />
           </div>
       </div>
