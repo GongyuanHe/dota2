@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {
+  BrowserRouter as Router,
+  Route
+} from 'react-router-dom';
 
 import Header from './Header/Header.js';
 import Footer from './Footer/Footer.js';
@@ -12,14 +16,18 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider>
-          <div className="App" style={{minWidth: '1212px'}}>
-              <Header></Header>
-              <Heroes></Heroes>
-              <Home></Home>
-              <Around></Around>
-              <Store></Store>
-              <Footer></Footer>
-          </div>
+          <Router>
+              <div className="App" style={{minWidth: '1212px'}}>
+                  <Header></Header>
+
+                  <Route exact path="/" component={Home}/>
+                  <Route path="/heroes" component={Heroes}/>
+                  <Route path="/store" component={Store}/>
+                  <Route path="/around" component={Around}/>
+
+                  <Footer></Footer>
+              </div>
+          </Router>
       </MuiThemeProvider>
     );
   }

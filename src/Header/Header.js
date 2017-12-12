@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import { connect } from 'react-redux';
@@ -91,10 +92,10 @@ class HeaderComponent extends Component {
                       )
                   }
               </div>
-              <FlatButton label="Around" />
-              <FlatButton label="Store" />
-              <FlatButton label="Heroes" />
-              <FlatButton label="Home" />
+              <Link to="/around"><FlatButton label="Around" /></Link>
+              <Link to="/store"><FlatButton label="Store" /></Link>
+              <Link to="/heroes"><FlatButton label="Heroes" /></Link>
+              <Link to="/"><FlatButton label="Home" /></Link>
           </div>
       </div>
     );

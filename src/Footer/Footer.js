@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import FlatButton from 'material-ui/FlatButton';
 
 class Footer extends Component {
@@ -7,10 +8,10 @@ class Footer extends Component {
         <div style={styles.footer}>
             <div style={styles.container}>
                 <div style={styles.Lcontainer}>
-                    <FlatButton labelStyle={styles.copy} label="Home" />
-                    <FlatButton labelStyle={styles.copy} label="Heroes" />
-                    <FlatButton labelStyle={styles.copy} label="Store" />
-                    <FlatButton labelStyle={styles.copy} label="Around" />
+                    <Link to="/"><FlatButton labelStyle={styles.copy} label="Home" /></Link>
+                    <Link to="/heroes"><FlatButton labelStyle={styles.copy} label="Heroes" /></Link>
+                    <Link to="/store"><FlatButton labelStyle={styles.copy} label="Store" /></Link>
+                    <Link to="/around"><FlatButton labelStyle={styles.copy} label="Around" /></Link>
                 </div>
                 <div style={styles.Rcontainer}>
                     <div style={styles.copy}>
