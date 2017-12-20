@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Header from './Header/Header.js';
 import Footer from './Footer/Footer.js';
@@ -11,8 +12,31 @@ import Heroes from './Heroes/Heroes.js';
 import Home from './Home.js';
 import Around from './Around/Around.js';
 import Store  from  './Store/Store.js';
+import { login, logout } from './Actions.js';
+import firebase from './Firebase.js';
 
-class App extends Component {
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.isLoggedIn,
+    }
+}
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        login: () => dispatch(login()),
+        logout: () => dispatch(logout())
+    }
+}
+class AppComponent extends Component {
+  componentWillMount() {
+      firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+              this.props.login();
+          } else {
+              // No user is signed in.
+              this.props.logout();
+          }
+      });
+  }
   render() {
     return (
       <MuiThemeProvider>
@@ -32,5 +56,5 @@ class App extends Component {
     );
   }
 }
-
+const App = connect(mapStateToProps, mapDispatchToProps)(AppComponent);
 export default App;

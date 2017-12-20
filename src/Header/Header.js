@@ -32,14 +32,12 @@ class HeaderComponent extends Component {
   componentWillMount() {
       firebase.auth().onAuthStateChanged((user) => {
           if (user) {
-              this.props.login();
               this.setState({
                  loginText: "Log Out",
                  photoURL: user.photoURL,
               });
           } else {
               // No user is signed in.
-              this.props.logout();
               this.setState({
                  loginText: "Log In",
                  photoURL: "",
