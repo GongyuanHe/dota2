@@ -1,5 +1,4 @@
-import { LOG_IN, LOG_OUT } from './Actions.js'
-import firebase from './Firebase.js';
+import { LOG_IN, LOG_OUT } from './Actions.js';
 
 var initialState = {
     isLoggedIn: 0

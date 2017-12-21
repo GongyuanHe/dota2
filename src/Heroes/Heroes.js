@@ -1,14 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
-import firebase from '../Firebase.js';
+import axios from 'axios';
 
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
     }
 }
-
 class HeroesComponent extends React.Component {
     constructor(props) {
        super(props);
@@ -24,7 +22,7 @@ class HeroesComponent extends React.Component {
        }
     }
     async componentDidMount () {
-        let data = {};
+        let data = [];
         let int=[];
         let str=[];
         let agi=[];
@@ -32,29 +30,27 @@ class HeroesComponent extends React.Component {
         let agiIsHover=[];
         let strIsHover=[];
 
-        await firebase.database().ref("/heroes").once("value").then(snapshot => {
-            data = snapshot.val();
+        await axios.get('http://localhost:3000/heroes').then( res => {
+            data = res.data;
         });
-        Object.entries(data).forEach(
-            ([key, value]) => {
-                switch (value.cat) {
-                    case "INT":
-                        int.push(value);
-                        intIsHover.push(false);
-                        break;
-                    case "STR":
-                        str.push(value);
-                        strIsHover.push(false);
-                        break;
-                    case "AGI":
-                        agi.push(value);
-                        agiIsHover.push(false);
-                        break;
-                    default:
-                        break;
-                }
+        for (let i in data ) {
+            switch (data[i].cat) {
+                case "INT":
+                    int.push(data[i]);
+                    intIsHover.push(false);
+                    break;
+                case "STR":
+                    str.push(data[i]);
+                    strIsHover.push(false);
+                    break;
+                case "AGI":
+                    agi.push(data[i]);
+                    agiIsHover.push(false);
+                    break;
+                default:
+                    break;
             }
-        );
+        }
         this.setState({
             int: int,
             str: str,
