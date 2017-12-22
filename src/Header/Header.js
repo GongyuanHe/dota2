@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import { connect } from 'react-redux';
@@ -90,10 +90,10 @@ class HeaderComponent extends Component {
                       )
                   }
               </div>
-              <Link to="/around"><FlatButton label="Around" /></Link>
-              <Link to="/store"><FlatButton label="Store" /></Link>
-              <Link to="/heroes"><FlatButton label="Heroes" /></Link>
-              <Link to="/"><FlatButton label="Home" /></Link>
+              <NavLink activeStyle={styles.selected} to="/around"><FlatButton label="Around" /></NavLink>
+              <NavLink activeStyle={styles.selected} to="/store"><FlatButton label="Store" /></NavLink>
+              <NavLink activeStyle={styles.selected} to="/heroes"><FlatButton label="Heroes" /></NavLink>
+              <NavLink activeStyle={styles.selected} exact to="/"><FlatButton label="Home"   /></NavLink>
           </div>
       </div>
     );
@@ -138,7 +138,10 @@ const styles = ({
         alignItems: 'center',
         margin: '10px'
     },
+    selected: {
+      backgroundColor: 'rgba(64, 64, 64, 0.2)'
+    }
 });
 
-const Header = connect(mapStateToProps, mapDispatchToProps)(HeaderComponent);
+const Header = connect(mapStateToProps, mapDispatchToProps,null, {  pure: false })(HeaderComponent);
 export default Header;

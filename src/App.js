@@ -11,6 +11,7 @@ import Footer from './Footer/Footer.js';
 import Heroes from './Heroes/Heroes.js';
 import Home from './Home.js';
 import Around from './Around/Around.js';
+import HeroDetail from './HeroDetail/HeroDetail.js';
 import Store  from  './Store/Store.js';
 import { login, logout } from './Actions.js';
 import firebase from './Firebase.js';
@@ -43,12 +44,11 @@ class AppComponent extends Component {
           <Router>
               <div className="App" style={{minWidth: '1212px'}}>
                   <Header></Header>
-
                   <Route exact path="/" component={Home}/>
-                  <Route path="/heroes" component={Heroes}/>
+                  <Route exact path="/heroes" component={Heroes} />
+                  <Route path="/heroes/:name" component={HeroDetail}/>
                   <Route path="/store" component={Store}/>
                   <Route path="/around" component={Around}/>
-
                   <Footer></Footer>
               </div>
           </Router>
