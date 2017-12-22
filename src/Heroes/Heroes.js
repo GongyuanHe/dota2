@@ -3,213 +3,95 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+import HeroImage from './HeroImage.js'
 const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.isLoggedIn,
     }
 }
+const TYPE = {STR: 0, AGI: 1 , INT: 2, };
+const arrayPush = ( type, arr , hoverArr, data) => {
+    arr[TYPE[type]].push(data);
+    hoverArr[TYPE[type]].push(false);
+}
+
 class HeroesComponent extends React.Component {
-    constructor(props) {
-       super(props);
+    constructor() {
+       super();
        this.state = {
           heroName: "Choose a Hero",
-          int: [],
-          str: [],
-          agi: [],
-          intIsHover: [],
-          strIsHover: [],
-          agiIsHover: [],
-
+          int: [],str: [],agi: [],
+          intIsHover: [],strIsHover: [],agiIsHover: [],
+          typeArray: [[],[],[]],
+          isHoverArray: [[],[],[]]
        }
     }
     async componentDidMount () {
-        let data = [];
-        let int=[];
-        let str=[];
-        let agi=[];
-        let intIsHover=[];
-        let agiIsHover=[];
-        let strIsHover=[];
+        let data=[];
+        let typeArray = this.state.typeArray;
+        let isHoverArray=this.state.isHoverArray;
 
         await axios.get('http://localhost:3000/heroes').then( res => {
             data = res.data;
         });
         for (let i in data ) {
-            switch (data[i].cat) {
-                case "INT":
-                    int.push(data[i]);
-                    intIsHover.push(false);
-                    break;
-                case "STR":
-                    str.push(data[i]);
-                    strIsHover.push(false);
-                    break;
-                case "AGI":
-                    agi.push(data[i]);
-                    agiIsHover.push(false);
-                    break;
-                default:
-                    break;
-            }
+            arrayPush(data[i].cat,typeArray,isHoverArray,data[i]);
         }
         this.setState({
-            int: int,
-            str: str,
-            agi: agi,
-            intIsHover: intIsHover,
-            agiIsHover: agiIsHover,
-            strIsHover: strIsHover,
+            typeArray: typeArray,
+            isHoverArray: isHoverArray
         });
     }
-
-    handleHeroHover = (name,type,i) => {
-        switch(type){
-            case "str":
-                let strIsHover=this.state.strIsHover;
-                strIsHover[i]=true;
-                this.setState({
-                    heroName: name,
-                    strIsHover: strIsHover,
-                });
-                break;
-            case "agi":
-                let agiIsHover=this.state.agiIsHover;
-                agiIsHover[i]=true;
-                this.setState({
-                    heroName: name,
-                    agiIsHover: agiIsHover,
-                });
-                break;
-            case "int":
-                let intIsHover=this.state.intIsHover;
-                intIsHover[i]=true;
-                this.setState({
-                    heroName: name,
-                    intIsHover: intIsHover,
-                });
-                break;
-            default:
-                break;
-        }
-    }
-    handleHeroOut = (str,type,i) => {
-        switch(type){
-            case "str":
-                let strIsHover=this.state.strIsHover;
-                strIsHover[i]=false;
-                this.setState({
-                    heroName: str,
-                    strIsHover: strIsHover,
-                });
-                break;
-            case "agi":
-                let agiIsHover=this.state.agiIsHover;
-                agiIsHover[i]=false;
-                this.setState({
-                    heroName: str,
-                    agiIsHover: agiIsHover,
-                });
-                break;
-            case "int":
-                let intIsHover=this.state.intIsHover;
-                intIsHover[i]=false;
-                this.setState({
-                    heroName: str,
-                    intIsHover: intIsHover,
-                });
-                break;
-            default:
-                break;
-        }
-    }
+    // handleHover = (str,i,j,isHover) => {
+    //     let isHoverArray = this.state.isHoverArray;
+    //     isHoverArray[i][j]=isHover;
+    //     this.setState({
+    //         heroName: str,
+    //         isHoverArray: isHoverArray,
+    //     });
+    // }
 
   render() {
-
     return (
         <div style={styles.wrap}>
-            {
-                this.props.isLoggedIn ? (
-                    <div style={styles.wrap}>
-                        <div className="container" style={styles.container}>
-                            <div className="title" style={styles.heroName}>
-                                {this.state.heroName}
-                            </div>
-                            <div className = "heroesDisplay" style={styles.heroesDisplay}>
-                                <div style={styles.heroColumns}>
-                                    {this.state.str.map((item,i)=>{
-                                        return ( <Link key={i} to={/heroes/+item.name}>
-                                                    <div  style={{padding: '9px',position: 'relative'}}>
-                                                        <img src={item.logo} alt = "logo"
-                                                         onMouseOver={ () => this.handleHeroHover(item.name,"str",i)}></img>
-                                                        {
-                                                           this.state.strIsHover[i] ? (
-                                                              <div style={styles.hover}>
-                                                                  <img src={item.hover} alt = 'hover'
-                                                                   onMouseOut={ () => this.handleHeroOut("Choose a Hero","str",i)}></img>
-                                                              </div>
-                                                           ):(
-                                                               <div style={styles.notHover}>
-                                                                   <img src={item.hover} alt = 'hover'
-                                                                    onMouseOut={ () => this.handleHeroOut("Choose a Hero","str",i)}></img>
-                                                               </div>
-                                                           )
-                                                        }
-                                                     </div>
-                                                   </Link>)
-                                    })}
-                                </div>
-                                <div style={styles.heroColumns}>
-                                    {this.state.agi.map((item,i)=>{
-                                        return ( <Link key={i} to={/heroes/+item.name}>
-                                                    <div  style={{padding: '9px',position: 'relative'}}>
-                                                        <img src={item.logo} alt = "logo"
-                                                         onMouseOver={ () => this.handleHeroHover(item.name,"agi",i)}></img>
-                                                        {
-                                                           this.state.agiIsHover[i] ? (
-                                                              <div style={styles.hover}>
-                                                                  <img src={item.hover} alt = 'hover'
-                                                                   onMouseOut={ () => this.handleHeroOut("Choose a Hero","agi",i)}></img>
-                                                              </div>
-                                                           ):(
-                                                               <div style={styles.notHover}>
-                                                                   <img src={item.hover} alt = 'hover'
-                                                                    onMouseOut={ () => this.handleHeroOut("Choose a Hero","agi",i)}></img>
-                                                               </div>
-                                                           )
-                                                        }
-                                                     </div>
-                                                   </Link>)
-                                    })}
-                                </div>
-                                <div style={styles.heroColumns}>
-                                    {this.state.int.map((item,i)=>{
-                                        return ( <Link key={i} to={/heroes/+item.name}>
-                                                    <div  style={{padding: '9px',position: 'relative'}}>
-                                                        <img src={item.logo} alt = "logo"
-                                                         onMouseOver={ () => this.handleHeroHover(item.name,"int",i)}></img>
-                                                        {
-                                                           this.state.intIsHover[i] ? (
-                                                              <div style={styles.hover}>
-                                                                  <img src={item.hover} alt = 'hover'
-                                                                   onMouseOut={ () => this.handleHeroOut("Choose a Hero","int",i)}></img>
-                                                              </div>
-                                                           ):(
-                                                               <div style={styles.notHover}>
-                                                                   <img src={item.hover} alt = 'hover'></img>
-                                                               </div>
-                                                           )
-                                                        }
-                                                     </div>
-                                                   </Link>)
-                                    })}
-                                </div>
-                            </div>
+            {this.props.isLoggedIn ? (
+                <div style={styles.wrap}>
+                    <div className="container" style={styles.container}>
+                        <div className="title" style={styles.heroName}>
+                            {this.state.heroName}
+                        </div>
+                        <div className = "heroesDisplay" style={styles.heroesDisplay}>
+                            {this.state.typeArray.map(( item, i)=> {
+                                return(
+                                    <div key={i} style={styles.heroColumns}>
+                                        {item.map((hero,j)=>{
+                                            return ( <Link key={j} to={/heroes/+hero.name}>
+                                                        <div  style={{padding: '9px',position: 'relative'}}>
+                                                            <HeroImage data={hero}/>
+                                                            {/* <img src={hero.logo} alt = "logo"
+                                                                onMouseOver={ () => this.handleHover(hero.name,i,j,true)}></img>
+                                                            {this.state.isHoverArray[i][j] ? (
+                                                                <div style={styles.hover}>
+                                                                    <img src={hero.hover} alt = 'hover'
+                                                                        onMouseOut={ () => this.handleHover("Choose a Hero",i,j,false)}></img>
+                                                                </div>
+                                                            ):(
+                                                                <div style={styles.notHover}>
+                                                                    <img src={hero.hover} alt = 'hover'
+                                                                        onMouseOut={ () => this.handleHover("Choose a Hero",i,j,false)}></img>
+                                                                </div>
+                                                            )} */}
+                                                        </div>
+                                                    </Link>)
+                                        })}                                            
+                                    </div>)
+                            })}                        
                         </div>
                     </div>
-                ):(
-                    <div style={styles.title}>Membership Only</div>
-                )
-            }
+                </div>
+            ):(
+                <div style={styles.title}>Membership Only</div>
+            )}
         </div>
     );
   }
@@ -260,24 +142,24 @@ const styles= ({
       borderWidth: '5px',
       alignContent: 'flex-start',
   },
-  hover: {
-      position: 'absolute',
-      display: '',
-      left: '0',
-      marginLeft: '-24px',
-      top: '0',
-      marginTop: '-11px',
-      zIndex: '1',
+//   hover: {
+//       position: 'absolute',
+//       display: '',
+//       left: '0',
+//       marginLeft: '-24px',
+//       top: '0',
+//       marginTop: '-11px',
+//       zIndex: '1',
 
-  },
-  notHover: {
-      position: 'absolute',
-      display: 'none',
-      left: '0',
-      marginLeft: '-24px',
-      top: '0',
-      marginTop: '-11px',
-  }
+//   },
+//   notHover: {
+//         position: 'absolute',
+//         display: 'none',
+//         left: '0',
+//         marginLeft: '-24px',
+//         top: '0',
+//         marginTop: '-11px',
+//   }
 });
 
 const Heroes = connect(mapStateToProps)(HeroesComponent);
