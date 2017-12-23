@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import Header from './Header/Header.js';
 import Footer from './Footer/Footer.js';
 import Heroes from './Heroes/Heroes.js';
-import Home from './Home.js';
+import Home from './Home/Home.js';
 import Around from './Around/Around.js';
 import HeroDetail from './HeroDetail/HeroDetail.js';
 import Store  from  './Store/Store.js';
@@ -40,16 +40,18 @@ class AppComponent extends Component {
   }
   render() {
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider >
           <Router>
               <div className="App" style={{minWidth: '1212px'}}>
-                  <Header></Header>
-                  <Route exact path="/" component={Home}/>
-                  <Route exact path="/heroes" component={Heroes} />
-                  <Route path="/heroes/:name" component={HeroDetail}/>
-                  <Route path="/store" component={Store}/>
-                  <Route path="/around" component={Around}/>
-                  <Footer></Footer>
+                    <Header></Header>
+                    <div style={{backgroundColor: 'rgb(0, 0, 0)'}}>
+                        <Route exact path="/" component={Home}/>
+                        <Route exact path="/heroes" component={Heroes} />
+                        <Route path="/heroes/:name" component={HeroDetail}/>
+                        <Route path="/store" component={Store}/>
+                        <Route path="/around" component={Around}/>
+                    </div>
+                    <Footer></Footer>
               </div>
           </Router>
       </MuiThemeProvider>

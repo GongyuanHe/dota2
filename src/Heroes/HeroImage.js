@@ -1,34 +1,17 @@
 import React from 'react';
+import Radium from 'radium';
 
-class HeroImage extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = ({
-            hover: false,
-        });
-    }
-    handleHover = (str,isHover) => {
-        this.setState({
-            hover: isHover
-        });
+class HeroImageComponent extends React.Component {
+    handleHover = (name) => {
+        this.props.name(name);
     }
 
     render(){
         return (
-            <div>
-                <img src={this.props.data.logo} alt = "logo"
-                    onMouseEnter={ () => this.handleHover(this.props.data.name,true)}></img>
-                {this.state.hover ? (
-                    <div style={styles.hover}>
-                        <img src={this.props.data.hover} alt = 'hover'
-                            onMouseOut={ () => this.handleHover("Choose a Hero",false)}></img>
-                    </div>
-                ):(
-                    <div style={styles.notHover}>
-                        <img src={this.props.data.hover} alt = 'hover'
-                            onMouseOut={ () => this.handleHover("Choose a Hero",false)}></img>
-                    </div>
-                )} 
+            <div >
+                <img src={this.props.data.logo} alt = "logo"></img>
+                <img src={this.props.data.hover} alt = 'hover' style={styles.hover}
+                    onMouseOver={ () => this.handleHover(this.props.data.name)}></img>       
             </div>
         )
     }
@@ -37,22 +20,17 @@ class HeroImage extends React.Component {
 const styles = ({
     hover: {
         position: 'absolute',
-        display: '',
+        opacity: '0',
         left: '0',
         marginLeft: '-24px',
         top: '0',
         marginTop: '-11px',
         zIndex: '1',
-  
-    },
-    notHover: {
-          position: 'absolute',
-          display: 'none',
-          left: '0',
-          marginLeft: '-24px',
-          top: '0',
-          marginTop: '-11px',
+        ':hover': {
+            opacity: '1'
+        }
     }
 });
 
+const HeroImage = Radium(HeroImageComponent);
 export default HeroImage;

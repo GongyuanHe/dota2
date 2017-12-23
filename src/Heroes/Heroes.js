@@ -42,14 +42,11 @@ class HeroesComponent extends React.Component {
             isHoverArray: isHoverArray
         });
     }
-    // handleHover = (str,i,j,isHover) => {
-    //     let isHoverArray = this.state.isHoverArray;
-    //     isHoverArray[i][j]=isHover;
-    //     this.setState({
-    //         heroName: str,
-    //         isHoverArray: isHoverArray,
-    //     });
-    // }
+    setName = (name) => {
+        this.setState({
+            heroName: name
+        })
+    }
 
   render() {
     return (
@@ -67,20 +64,7 @@ class HeroesComponent extends React.Component {
                                         {item.map((hero,j)=>{
                                             return ( <Link key={j} to={/heroes/+hero.name}>
                                                         <div  style={{padding: '9px',position: 'relative'}}>
-                                                            <HeroImage data={hero}/>
-                                                            {/* <img src={hero.logo} alt = "logo"
-                                                                onMouseOver={ () => this.handleHover(hero.name,i,j,true)}></img>
-                                                            {this.state.isHoverArray[i][j] ? (
-                                                                <div style={styles.hover}>
-                                                                    <img src={hero.hover} alt = 'hover'
-                                                                        onMouseOut={ () => this.handleHover("Choose a Hero",i,j,false)}></img>
-                                                                </div>
-                                                            ):(
-                                                                <div style={styles.notHover}>
-                                                                    <img src={hero.hover} alt = 'hover'
-                                                                        onMouseOut={ () => this.handleHover("Choose a Hero",i,j,false)}></img>
-                                                                </div>
-                                                            )} */}
+                                                            <HeroImage data={hero} name={this.setName}/>
                                                         </div>
                                                     </Link>)
                                         })}                                            
@@ -162,5 +146,5 @@ const styles= ({
 //   }
 });
 
-const Heroes = connect(mapStateToProps)(HeroesComponent);
+const Heroes = connect(mapStateToProps,null,null,{  pure: false })(HeroesComponent);
 export default Heroes;

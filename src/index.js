@@ -7,6 +7,7 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import dota2 from './Reducers.js';
+
 let store = createStore(dota2);
 
 ReactDOM.render(<Provider store={store}>

@@ -6,10 +6,12 @@
     "axios": "^0.17.1",
     "firebase": "^4.5.2",
     "material-ui": "^0.19.4",
+    "radium": "^0.19.6",
     "react": "^16.2.0",
     "react-dom": "^16.0.0",
     "react-lazyload": "^2.2.7",
     "react-redux": "^5.0.6",
+    "react-responsive-carousel": "^3.1.30",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2"

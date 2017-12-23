@@ -28,7 +28,7 @@ const styles = ({
     footer: {
         position: 'absolute',
         right: '0',
-        bottom: '0',
+        bottom: '10px',
         left: '0',
         padding: '1rem',
         backgroundColor: '#2b3d52',
