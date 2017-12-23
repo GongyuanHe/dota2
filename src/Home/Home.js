@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Slider from 'react-slick';
 import { Carousel } from 'react-responsive-carousel';
 import style from 'react-responsive-carousel/lib/styles/carousel.min.css';
 
