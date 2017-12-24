@@ -1,26 +1,39 @@
 import React, { Component } from 'react';
+import { geolocated } from 'react-geolocated';
+
+import ReactGoogleMaps from './GoogleMap.js';
 
 class Around extends Component {
-
+    constructor () {
+        super();
+        this.state = {
+            center: { lat: 31.216610, lng: 121.387506 },
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.coords){
+            this.setState({
+                center: { lat: nextProps.coords.latitude, lng: nextProps.coords.longitude }
+            });
+        }
+    }
     render () {
-      return(
-          <div style={styles.container}>
-              Around
-          </div>
-      )
+        return(
+            <div style={styles.container}>
+                <ReactGoogleMaps center={this.state.center}/>
+            </div>
+        )
     }
 }
 const styles = ({
     container: {
-        fontSize: '250%',
-        fontFamily: 'times, Times New Roman, times-roman, georgia, serif',
-        color: '#444',
-        margin: '0',
-        padding: '0px 0px 6px 0px',
-        lineHeight: '44px',
-        letterSpacing: '-2px',
-        fontWeight: 'bold',
+
     }
 })
 
-export default Around;
+export default geolocated({
+    positionOptions: {
+      enableHighAccuracy: false,
+    },
+    userDecisionTimeout: 5000,
+  })(Around);

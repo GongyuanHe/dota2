@@ -28,8 +28,9 @@ const styles = ({
     footer: {
         position: 'absolute',
         right: '0',
-        bottom: '10px',
+        bottom: '0',
         left: '0',
+        height: '60px',
         padding: '1rem',
         backgroundColor: '#2b3d52',
         textAlign: 'center',
