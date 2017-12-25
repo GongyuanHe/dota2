@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 
 import logo from './logo.png';
@@ -80,11 +81,11 @@ class HeaderComponent extends Component {
               </div>
           </div>
           <div className="Lcontainer" style={styles.Rcontainer}>
-              <a id = "login" style={styles.login} onClick={this.handleLogin}>{this.state.loginText}</a>
+              <RaisedButton label={this.state.loginText} primary={true} onClick={this.handleLogin} style={{margin: '12px'}}/>
               <div>
                   {
                       this.state.photoURL ? (
-                          <img src={this.state.photoURL} style={{width: '30px', height: '30px'}} alt = 'selfi'></img>
+                          <img src={this.state.photoURL} style={{width: '30px', height: '30px', marginLeft: '5px'}} alt = 'selfi'></img>
                       ) : (
                           <div></div>
                       )

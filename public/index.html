@@ -14,6 +14,31 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        var head = $('head')[0];
+        var insertBefore = head.insertBefore;
+        head.insertBefore = function (newElement, referenceElement) {
+            // intercept font download
+            if (newElement.href
+                && newElement.href.indexOf('https://fonts.googleapis.com/css?family=Roboto') === 0) {
+                return;
+            }
+            // intercept style elements for IEs
+            if (newElement.tagName.toLowerCase() === 'style'
+                && newElement.styleSheet
+                && newElement.styleSheet.cssText
+                && newElement.styleSheet.cssText.replace('\r\n', '').indexOf('.gm-style') === 0) {
+                return;
+            }
+            // intercept style elements for other browsers
+            if (newElement.tagName.toLowerCase() === 'style'
+                && newElement.innerHTML
+                && newElement.innerHTML.replace('\r\n', '').indexOf('.gm-style') === 0) {
+                return;
+            }
+            insertBefore.call(head, newElement, referenceElement);
+        };
+    </script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.

@@ -5,9 +5,9 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-map
 
 const MyGoogleMap = compose(
     withProps({
-        googleMapURL: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB46tr670WOrTiblIuPGJhV0lglAPnyVWE',
+        googleMapURL: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB46tr670WOrTiblIuPGJhV0lglAPnyVWE&v=3.exp&libraries=geometry,drawing,places',
         loadingElement: <div style={{ height: `100%` }} />,
-        containerElement: <div style={{ height: `400px` }} />,
+        containerElement: <div style={{ height: `500px` , padding: '20px'}} />,
         mapElement: <div style={{ height: `100%` }} />
     }),
     withScriptjs,
