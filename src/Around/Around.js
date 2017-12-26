@@ -5,11 +5,11 @@ import ReactGoogleMaps from './GoogleMap.js';
 import Chat from './Chat.js';
 
 class Around extends Component {
-    constructor () {
-        super();
+    constructor (props) {
+        super(props);
         this.state = {
             center: { lat: 31.216610, lng: 121.387506 },
-        }
+        };
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.coords){

@@ -1,21 +1,42 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import {connect} from 'react-redux';
 
-import './Chat.css';
 import logo from '../assets/chat_logo.png'
 import firebase from '../Firebase.js';
 
-class Chat extends Component {
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.isLoggedIn,
+    }
+}
+
+class ChatComponent extends Component {
     constructor () {
         super();
+        let userEmail;
+        firebase.auth().onAuthStateChanged( user => {
+            if (user) {
+                userEmail = user.email;
+            }
+        });
         this.state = {
-            usr: 'Park',
+            usr: userEmail,
             data: [],
         }
     }
     scrollToBottom = () => {
-        this.messagesEnd.scrollTop = this.messagesEnd.scrollHeight;
+        if(this.messagesEnd){
+            this.messagesEnd.scrollTop = this.messagesEnd.scrollHeight;
+        }
+    }
+    shouldComponentUpdate(nextProps) {
+        if (nextProps.isLoggedIn){
+            return true;
+        }else{
+            return true;
+        }
     }
     async componentDidMount () {
         let ref = firebase.database().ref().child("messages");
@@ -30,57 +51,65 @@ class Chat extends Component {
             this.setState({
                 data: data
             });
-            this.scrollToBottom();
+            setTimeout(this.scrollToBottom,0);
         });
+        setTimeout(this.scrollToBottom,0);
     }
     handleClick = () => {
         let name = this.state.usr;
         let msg = this.state.msg;
+        this.setState({
+            msg: ''
+        });
         let ref = firebase.database().ref().child("messages");
         ref.push({
             name: name,
             msg: msg,
             time: firebase.database.ServerValue.TIMESTAMP
         });
-        this.setState({
-            msg: ''
-        });
-        setTimeout(this.scrollToBottom,0);
     }
     render () {
         return (
             <div style={styles.container}>
-                <div className="clearfix" style={styles.title}>
+                <div  style={styles.title}>
                     <img src={logo} alt="avatar" style={styles.logo}/>
                     <h1 style={{fontWeight: 'bold'}}>Dota2 Real-time Chat Room</h1>
                 </div> 
                 <div style={styles.chatMsg} ref={(el) => { this.messagesEnd = el; }}>
+                    {this.props.isLoggedIn ? 
                     <ul style={{listStyleType: 'none'}}>
                         {this.state.data.map( ( obj, i) => {
                             return (!(obj.name === this.state.usr) ?
-                                        <li key={i} className="clearfix">
-                                            <div className="align-right" style={{marginBottom: '15px'}}>
-                                                <span className="message-data-time" >{obj.time}</span> &nbsp; &nbsp;
-                                                <span className="message-data-name" >{obj.name}</span> <i className="fa fa-circle me"></i>
+                                        <li key={i} style={styles.messages}>
+                                            <div  style={{marginBottom: '15px'}}>
+                                                <i className="fa fa-circle" style={{color: '#94C2ED'}}></i>
+                                                <span  >{obj.name}</span>&nbsp; &nbsp; 
+                                                <span  >{obj.time}</span> 
                                             </div>
-                                            <div className="message other-message float-right">
+                                            <div style={styles.otherArrowUp}></div>
+                                            <div style={styles.other}>
                                                 {obj.msg}
                                             </div> 
                                         </li>
                                         :
-                                        <li key={i} className="clearfix">
-                                            <div  style={{marginBottom: '15px'}}>
-                                                <span className="message-data-name"><i className="fa fa-circle online"></i>{obj.name}</span>
-                                                <span className="message-data-time">{obj.time}</span>
+                                        <li key={i} style={styles.messages}>
+                                            <div  style={{marginBottom: '15px',alignSelf: 'flex-end'}}>
+                                                <span  >{obj.time}</span> &nbsp; &nbsp;
+                                                <span  >{obj.name}</span> <i className="fa fa-circle" style={{color: '#86BB71'}}></i>
                                             </div>
-                                            <div className="message my-message">
+                                            <div style={styles.myArrowUp}></div>
+                                            <div style={styles.my}>
                                                 {obj.msg}
                                             </div>
                                         </li>)
                         })}
                     </ul>
+                    : 
+                    <h1>Membership only!</h1>
+                    }
+
                 </div>
-                <div className="chat-message clearfix ">
+                <div style={{padding: '30px'}}>
                     <TextField
                         hintText="Type Here"
                         floatingLabelText="Type Message"
@@ -122,10 +151,55 @@ const styles = ({
         overflowY: 'scroll',
         height: '575px'
     },
+    messages: {
+        display: 'flex',
+        flexDirection: 'column',
+        wordWrap:'break-word',
+    },
+    myArrowUp: {
+        width: '0',
+        height: '0',
+        borderLeft: '10px solid transparent',
+        borderRight: '10px solid transparent',
+        borderBottom: '10px solid #86BB71',
+        alignSelf: 'flex-end',
+        marginRight: '20px'
+    },
+    otherArrowUp: {
+        width: '0',
+        height: '0',
+        borderLeft: '10px solid transparent',
+        borderRight: '10px solid transparent',
+        borderBottom: '10px solid #94C2ED',
+        alignSelf: 'flex-start',
+        marginLeft: '20px'
+    },
+    my: {
+        alignSelf: 'flex-end',
+        maxWidth: '80%',
+        backgroundColor: '#86BB71',
+        padding: '18px 20px',
+        fontSize: '16px',
+        borderRadius: '7px',
+        marginBottom: '30px',
+        color: 'white',
+        marginRight: '5px'
+    },
+    other: {
+        alignSelf: 'flex-start',
+        maxWidth: '80%',
+        backgroundColor: '#94C2ED',
+        padding: '18px 20px',
+        fontSize: '16px',
+        borderRadius: '7px',
+        marginBottom: '30px',
+        color: 'white',
+        marginLeft: '5px'
+    },
     send: {
         display: 'flex',
         justifyContent: 'flex-end'
     }
 })
-
+const Chat = connect(mapStateToProps,null,null,{  pure: false })(ChatComponent);
 export default Chat;

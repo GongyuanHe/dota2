@@ -126,24 +126,6 @@ const styles= ({
       borderWidth: '5px',
       alignContent: 'flex-start',
   },
-//   hover: {
-//       position: 'absolute',
-//       display: '',
-//       left: '0',
-//       marginLeft: '-24px',
-//       top: '0',
-//       marginTop: '-11px',
-//       zIndex: '1',
-
-//   },
-//   notHover: {
-//         position: 'absolute',
-//         display: 'none',
-//         left: '0',
-//         marginLeft: '-24px',
-//         top: '0',
-//         marginTop: '-11px',
-//   }
 });
 
 const Heroes = connect(mapStateToProps,null,null,{  pure: false })(HeroesComponent);
