@@ -15,14 +15,9 @@ const mapStateToProps = (state) => {
 class ChatComponent extends Component {
     constructor () {
         super();
-        let userEmail;
-        firebase.auth().onAuthStateChanged( user => {
-            if (user) {
-                userEmail = user.email;
-            }
-        });
+
         this.state = {
-            usr: userEmail,
+            usr: ' ',
             data: [],
         }
     }
@@ -39,6 +34,13 @@ class ChatComponent extends Component {
         }
     }
     async componentDidMount () {
+        firebase.auth().onAuthStateChanged( user => {
+            if (user) {
+                this.setState({
+                    usr: user.email
+                });
+            }
+        });
         let ref = firebase.database().ref().child("messages");
         let data = [];
         let time, dataPiece;
@@ -62,6 +64,7 @@ class ChatComponent extends Component {
             msg: ''
         });
         let ref = firebase.database().ref().child("messages");
+        console.log(name);
         ref.push({
             name: name,
             msg: msg,
@@ -120,7 +123,8 @@ class ChatComponent extends Component {
                         onChange = { (e) => this.setState({msg: e.target.value})}
                     />
                     <div style={styles.send}>
-                        <RaisedButton label="Send" primary={true} style={{margin: '12px'}} onClick={this.handleClick}/>
+                        <RaisedButton label="Send" primary={true} style={{margin: '12px'}} 
+                            onClick={this.handleClick } disabled={ !this.state.msg || !this.props.isLoggedIn}/>
                     </div>
                 </div> 
             </div>
